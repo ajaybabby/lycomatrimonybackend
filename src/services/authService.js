@@ -11,10 +11,7 @@ const validateUser = async (email, password) => {
       return null;
     }
 
-    // Clean the stored hash by removing any whitespace
     const cleanedHash = user.password.trim();
-    
-    // Generate a test hash with the same password for comparison
     const testHash = await bcrypt.hash(password, 10);
     console.log('Test hash generated:', testHash);
     console.log('Stored hashed password (cleaned):', cleanedHash);
@@ -24,7 +21,12 @@ const validateUser = async (email, password) => {
     console.log('Password comparison result:', isValidPassword);
 
     if (isValidPassword) {
-      return user;
+      // Get subscription information
+      const subscription = await getUserSubscription(user.id);
+      return {
+        ...user,
+        planType: subscription ? subscription.plan_type : 'free'
+      };
     }
     return null;
   } catch (error) {
@@ -33,6 +35,11 @@ const validateUser = async (email, password) => {
   }
 };
 
+const getUserSubscription = async (userId) => {
+  return await authRepository.getUserSubscription(userId);
+};
+
 module.exports = {
-  validateUser
+  validateUser,
+  getUserSubscription
 };

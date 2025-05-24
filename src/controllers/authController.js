@@ -23,7 +23,8 @@ const login = async (req, res) => {
       success: true,
       data: {
         userId: user.id,
-        userToken: token
+        userToken: token,
+        subscription: user.planType || 'free'  // Add planType to response
       }
     });
   } catch (error) {

@@ -10,6 +10,28 @@ const findUserByEmail = async (email) => {
   }
 };
 
+const getUserSubscription = async (userId) => {
+  try {
+    const query = `
+      SELECT 
+        s.plan_type,
+        s.start_date,
+        s.expiry_date
+      FROM subscriptions s
+      WHERE s.user_id = ? 
+        AND s.expiry_date > CURRENT_TIMESTAMP
+      ORDER BY s.created_at DESC 
+      LIMIT 1
+    `;
+    
+    const [rows] = await db.query(query, [userId]);
+    return rows[0];
+  } catch (error) {
+    throw error;
+  }
+};
+
 module.exports = {
-  findUserByEmail
+  findUserByEmail,
+  getUserSubscription
 };
