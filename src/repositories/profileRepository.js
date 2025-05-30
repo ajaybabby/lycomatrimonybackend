@@ -3,8 +3,8 @@ const db = require('../config/db');
 const createProfile = async (profileData) => {
     try {
       const query = `
-        INSERT INTO users (profile_for, gender, first_name, last_name, date_of_birth, education, company, salary)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        INSERT INTO users (profile_for, gender, first_name, last_name, date_of_birth, education, company, salary,email,password)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `;
       const values = [
         profileData.profileFor,
@@ -14,7 +14,9 @@ const createProfile = async (profileData) => {
         profileData.dateOfBirth,
         profileData.education,
         profileData.company,
-        profileData.salary
+        profileData.salary,
+        profileData.email,
+        profileData.password
       ];
       
       const [result] = await db.query(query, values);

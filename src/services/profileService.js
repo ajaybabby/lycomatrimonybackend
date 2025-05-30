@@ -1,7 +1,15 @@
 const profileRepository = require('../repositories/profileRepository');
+const bcrypt = require('bcrypt'); // Import bcrypt
 
 const createProfile = async (profileData) => {
   try {
+    // Extract password and hash it
+    const password = profileData.password;
+    if (password) {
+      const hashedPassword = await bcrypt.hash(password, 10); // Hash the password
+      profileData.password = hashedPassword; // Replace plain password with hashed one
+    }
+
     return await profileRepository.createProfile(profileData);
   } catch (error) {
     throw error;
