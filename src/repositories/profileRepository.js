@@ -175,7 +175,7 @@ const createProfile = async (profileData) => {
   
   const getUserDetails = async (userId) => {
     try {
-      const query = 'SELECT id, email, first_name, last_name, date_of_birth, education, company, salary FROM users WHERE id = ?';
+      const query = 'SELECT * FROM users WHERE id = ?';
       const [rows] = await db.query(query, [userId]);
       return rows[0];
     } catch (error) {
